@@ -245,8 +245,8 @@ options = {
 		end)
 	end},
 
-	{"Force Reset", function()
-		loadstring(game:HttpGet("https://raw.githubusercontent.com/EdgeIY/infiniteyield/master/source"))()
+	{"TP Walk", function()
+		loadstring(game:HttpGet("https://raw.githubusercontent.com/snunte/tp/refs/heads/main/walk"))()
 	end},
 
 	{"Rejoin", function()
@@ -411,10 +411,6 @@ table.insert(options, {"Username", toggleUsernameLabels})
 table.insert(options, {"TP to Player", createTeleportPopup})
 table.insert(options, {"Click TP", function() end}) -- already bound above
 
--- No tab
-table.insert(options, {"TP Walk", function()
-	loadstring(game:HttpGet("https://raw.githubusercontent.com/snunte/tp/refs/heads/main/walk"))()
-end})
 
 -- Rejoin tab
 table.insert(options, {"Rejoin", function()
