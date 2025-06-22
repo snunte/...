@@ -245,12 +245,15 @@ options = {
 		end)
 	end},
 
+	{"TP Walk", function()
+		loadstring(game:HttpGet("https://raw.githubusercontent.com/snunte/tp/refs/heads/main/walk"))()
 	end},
 
 	{"Rejoin", function()
 		game:GetService("TeleportService"):Teleport(game.PlaceId, player)
-	end}
+	end},
 
+}
 -- Spectate popup
 local function createSpectatePopup()
 	local popup = Instance.new("Frame", gui)
