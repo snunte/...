@@ -351,6 +351,7 @@ local function createTeleportPopup()
 		end
 	end)
 end
+
 -- Username Labels with @ format
 local function toggleUsernameLabels()
 	local enabled = not next(usernameLabels)
@@ -381,7 +382,7 @@ local function toggleUsernameLabels()
 		end
 		usernameLabels = {}
 	end
-
+ 
 -- Ctrl + Click Teleport
 UIS.InputBegan:Connect(function(input)
 	if input.UserInputType == Enum.UserInputType.MouseButton1 and UIS:IsKeyDown(Enum.KeyCode.LeftControl) then
