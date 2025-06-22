@@ -352,31 +352,62 @@ local function createTeleportPopup()
 	end)
 end
 
--- Username Labels with @ format
 local function toggleUsernameLabels()
 	local enabled = not next(usernameLabels)
-	if enabled then
-		for _, plr in ipairs(Players:GetPlayers()) do
-			if plr.Character and plr.Character:FindFirstChild("Head") then
-				local head = plr.Character.Head
-				local label = Instance.new("BillboardGui", head)
-				label.Size = UDim2.new(0, 200, 0, 50)
-				label.StudsOffset = Vector3.new(0, 2.5, 0)
-				label.AlwaysOnTop = true
 
-				local text = Instance.new("TextLabel", label)
-				text.Size = UDim2.new(1, 0, 1, 0)
-				text.BackgroundTransparency = 1
-				text.TextColor3 = Color3.new(1, 1, 1)
-				text.TextStrokeTransparency = 0.5
-				text.TextStrokeColor3 = Color3.new(0, 0, 0)
-				text.Font = Enum.Font.Gotham
-				text.TextSize = 15
-				text.Text = plr.DisplayName .. " | @" .. plr.Name
-				usernameLabels[plr] = label
+	if enabled then
+		local function addLabel(plr)
+			if not plr.Character then return end
+			local head = plr.Character:FindFirstChild("Head")
+			if not head or usernameLabels[plr] then return end
+
+			local label = Instance.new("BillboardGui", head)
+			label.Size = UDim2.new(0, 200, 0, 50)
+			label.StudsOffset = Vector3.new(0, 2.5, 0)
+			label.AlwaysOnTop = true
+			label.Name = "UsernameLabel"
+
+			local text = Instance.new("TextLabel", label)
+			text.Size = UDim2.new(1, 0, 1, 0)
+			text.BackgroundTransparency = 1
+			text.TextColor3 = Color3.new(1, 1, 1)
+			text.TextStrokeTransparency = 0.5
+			text.TextStrokeColor3 = Color3.new(0, 0, 0)
+			text.Font = Enum.Font.Gotham
+			text.TextSize = 15
+			text.Text = plr.DisplayName .. " | @" .. plr.Name
+
+			usernameLabels[plr] = label
+		end
+
+		-- Apply to current players
+		for _, plr in ipairs(Players:GetPlayers()) do
+			addLabel(plr)
+
+			plr.CharacterAdded:Connect(function()
+				-- Delay slightly to wait for Head to exist
+				task.wait(0.5)
+				addLabel(plr)
+			end)
+		end
+
+		-- Apply to new players
+		Players.PlayerAdded:Connect(function(plr)
+			plr.CharacterAdded:Connect(function()
+				task.wait(0.5)
+				addLabel(plr)
+			end)
+		end)
+	else
+		for _, label in pairs(usernameLabels) do
+			if label and label.Parent then
+				label:Destroy()
 			end
 		end
-	else
+		usernameLabels = {}
+	end
+end
+
 		for _, label in pairs(usernameLabels) do
 			label:Destroy()
 		end
